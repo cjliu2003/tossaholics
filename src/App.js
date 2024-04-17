@@ -6,6 +6,7 @@ import SubmitMatch from './components/SubmitMatch';
 import PlayerRankings from './components/PlayerRankings';
 import CalculateOdds from './components/CalculateOdds';
 import RatingsOverTime from './components/RatingsOverTime';
+import RecentMatches from './components/RecentMatches';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/player-rankings" element={<PlayerRankings />} />
         <Route path="/calculate-odds" element={<CalculateOdds />} />
         <Route path="/ratings-evolution" element={<RatingsOverTime />} />
+        <Route path="/recent-matches" element={<RecentMatches />} />
       </Routes>
     </Router>
   );
