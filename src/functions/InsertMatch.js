@@ -28,7 +28,10 @@ export async function InsertMatch(teamAPlayer1, teamAPlayer2, teamBPlayer1, team
         let { data: team, error } = await supabase
             .from('team')
             .select('team_id')
-            .or(`team_player_1_id.eq.${player1Id},team_player_2_id.eq.${player2Id}`)
+            .or(`
+            and(team_player_1_id.eq.${player1Id},team_player_2_id.eq.${player2Id}),
+            and(team_player_1_id.eq.${player2Id},team_player_2_id.eq.${player1Id})
+            `)
             .single();
 
         if (error && error.message.includes('No rows found')) {
@@ -44,6 +47,7 @@ export async function InsertMatch(teamAPlayer1, teamAPlayer2, teamBPlayer1, team
 
         return team.id;
     }
+    
 
     try {
         // Check or insert players and get their IDs
