@@ -35,11 +35,17 @@ function Home() {
       color: 'white',
       border: 'none',
       borderRadius: '4px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      display: 'flex',
+      flexDirection: 'row',
+      alingItems: 'center',
+      justifyContent: 'center'
     },
     link: {
       color: 'white',
-      textDecoration: 'none'
+      fontSize: '16px',
+      textDecoration: 'none',
+      marginLeft: '10px',
     }
   };
 
@@ -75,10 +81,10 @@ function Home() {
         <FaCalculator />
         <a href="/calculate-odds" style={styles.link}>Calculate Odds</a>
       </button>
-      <button style={styles.button}>
+      {/* <button style={styles.button}>
         <FaChartLine />
         <a href="/ratings-evolution" style={styles.link}>Rating Evolution</a>
-      </button>
+      </button> */}
       <button style={styles.button}>
         <FaClock />
         <a href="/recent-matches" style={styles.link}>Recent Matches</a>
