@@ -26,9 +26,9 @@ export async function InsertMatch(teamAPlayer1, teamAPlayer2, teamBPlayer1, team
                 throw error;
             }
             return player.player_id;
-    } catch (err) {
-        console.error('Unexpected error:', err);
-    }
+        } catch (err) {
+            console.error('Unexpected error:', err);
+        }
     }
     
 
