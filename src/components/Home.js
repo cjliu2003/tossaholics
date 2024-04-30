@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { COLORS } from '../colors'; // Make sure COLORS has properties like red, purple, yellow
 import { fetchRankedPlayerList } from '../functions/FetchRankedPlayerList';
-
+import { FaGamepad, FaListOl, FaCalculator, FaChartLine, FaClock } from 'react-icons/fa'; // Importing FontAwesome icons
 function Home() {
 
   const [rankedPlayerList, setRankedPlayerList] = useState([]); 
@@ -18,9 +18,6 @@ function Home() {
       width: '300px',
       margin: '0 auto',
       padding: '20px',
-      backgroundColor: '#f9f9f9',
-      boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-      borderRadius: '8px'
     },
     heading: {
       color: COLORS.red, // Using red for the heading
@@ -34,15 +31,21 @@ function Home() {
       width: '100%',
       padding: '10px',
       marginTop: '10px',
-      backgroundColor: COLORS.yellow, // Using yellow for buttons
+      backgroundColor: "#000", // Using yellow for buttons
       color: 'white',
       border: 'none',
       borderRadius: '4px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      display: 'flex',
+      flexDirection: 'row',
+      alingItems: 'center',
+      justifyContent: 'center'
     },
     link: {
       color: 'white',
-      textDecoration: 'none'
+      fontSize: '16px',
+      textDecoration: 'none',
+      marginLeft: '10px',
     }
   };
 
@@ -50,38 +53,40 @@ function Home() {
     if (index === 0) return '🏆';
     if (index === 1) return '🥈';
     if (index === 2) return '🥉';
-    if (index === rankedPlayerList.length - 1) return '🐢';
-    return index + 1;
+    return `${index + 1}.`;
   };
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.heading}>Home Page</h2>
-      <p style={styles.paragraph}>Welcome to the Tossaholics page, where you can view elo-based rankings, view match history, and submit match results.</p>
       <h2>
         Current Top 10 Players
       </h2>
       <p>last updated: {new Date().toLocaleDateString()} @ {new Date().toLocaleTimeString()}</p>
-      <ul>
+      <div style={{alignSelf: 'center'}}>
         {rankedPlayerList.map((player, index) => (
-          <div key={index}>
+          <p key={index}>
             {renderRankIcon(index)} {player.player_name} ({player.player_rating})
-          </div>
+          </p>
         ))}
-      </ul>
+      </div>
       <button style={styles.button}>
+        <FaGamepad />
         <a href="/submit-match" style={styles.link}>Submit Match</a>
       </button>
       <button style={styles.button}>
+        <FaListOl />
         <a href="/player-rankings" style={styles.link}>Player Rankings</a>
       </button>
       <button style={styles.button}>
+        <FaCalculator />
         <a href="/calculate-odds" style={styles.link}>Calculate Odds</a>
       </button>
-      <button style={styles.button}>
+      {/* <button style={styles.button}>
+        <FaChartLine />
         <a href="/ratings-evolution" style={styles.link}>Rating Evolution</a>
-      </button>
+      </button> */}
       <button style={styles.button}>
+        <FaClock />
         <a href="/recent-matches" style={styles.link}>Recent Matches</a>
       </button>
     </div>

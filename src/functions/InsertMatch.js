@@ -205,7 +205,6 @@ export async function InsertMatch(teamAPlayer1, teamAPlayer2, teamBPlayer1, team
                 .from('playermatch')
                 .select('match_id', { count: 'exact', head : true }) // Select match_id with an exact count
                 .eq('player_id', playerId);
-    
             if (error) {
                 console.error('Error fetching game count:', error);
                 return 0;  // Return 0 on error

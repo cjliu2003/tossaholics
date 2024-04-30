@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 import { players } from '../assets/Players';
+import { fetchPlayerRatingFromPlayerName } from './fetchPlayerRatingFromName';
+import { calculateOdds } from '../functions/CalculateOdds';
 
 const styles = {
     container: {
@@ -9,7 +11,6 @@ const styles = {
       margin: '0 auto',
       padding: '20px',
       borderRadius: '8px',
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
     },
     title: {
       textAlign: 'center',
@@ -32,7 +33,7 @@ const styles = {
       padding: '10px 20px',
       border: 'none',
       borderRadius: '4px',
-      background: '#007bff',
+      background: '#000',
       color: 'white',
       cursor: 'pointer',
       fontSize: '16px'
@@ -42,9 +43,7 @@ const styles = {
       textAlign: 'center'
     },
     oddsValue: {
-      fontWeight: 'bold',
-      fontSize: '18px',
-      color: '#28a745'
+      fontSize: 20,
     }
   };
 
@@ -62,23 +61,25 @@ function CalculateOdds() {
   });
 
   // Function to handle the form submission
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setScoresToRandom()
+
+    let teamAPlayer1Rating = await fetchPlayerRatingFromPlayerName(selectedPlayers.player1);
+    let teamAPlayer2Rating = await fetchPlayerRatingFromPlayerName(selectedPlayers.player2);
+    let teamBPlayer1Rating = await fetchPlayerRatingFromPlayerName(selectedPlayers.player3);
+    let teamBPlayer2Rating = await fetchPlayerRatingFromPlayerName(selectedPlayers.player4);
+    let result = await calculateOdds(teamAPlayer1Rating, teamAPlayer2Rating, teamBPlayer1Rating, teamBPlayer2Rating);
+
+    setTeamScores({
+      team1: { score: result.teamAWinProbability.toFixed(2), odds: result.teamAOdds },
+      team2: { score: result.teamBWinProbability.toFixed(2), odds: result.teamBOdds }
+    });
+
     // Here you would typically make an API call to calculate odds based on the selected players
 
     console.log('Submitting:', selectedPlayers);
   };
 
-  const setScoresToRandom = () => {
-    // each team will have a probability and they add to 1, odds refelct that
-    const team1Score = Math.random();
-    const team2Score = 1 - team1Score;
-    setTeamScores({
-      team1: { score: (team1Score * 100).toFixed(2), odds: (1 / team1Score).toFixed(2) },
-      team2: { score: (team2Score * 100).toFixed(2), odds: (1 / team2Score).toFixed(2) }
-    });
-  }
 
   // Function to update the state when a player is selected
   const handlePlayerChange = (player, value) => {
@@ -118,16 +119,25 @@ function CalculateOdds() {
             {teamScores[`team${index + 1}`].score && (
               <div style={styles.oddsContainer}>
                 <p style={styles.oddsValue}>🏆 Chance of winning: {teamScores[`team${index + 1}`].score}%</p>
-                <p style={styles.oddsValue}>💰 Odds: {teamScores[`team${index + 1}`].odds}</p>
+                <p style={styles.oddsValue}>
+                  💰 Odds: {teamScores[`team${index + 1}`].odds >= 0 ? `+${teamScores[`team${index + 1}`].odds}` : teamScores[`team${index + 1}`].odds}
+              </p>
+
               </div>
             )}
           </div>
         ))}
         <input type="submit" value="Calculate Odds" style={styles.submitButton} />
+        <a style={{
+            border: '1px solid black',
+            color: 'black',
+            padding: '10px',
+            margin: '10px',
+            borderRadius: '4px',
+            textDecoration: 'none'
+        
+        }}href="/">Return home</a>
       </form>
-      <button>
-        <a href="/">Return home</a>
-      </button>
     </div>
   );
 }
